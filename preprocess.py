@@ -5,6 +5,7 @@ import spacy
 import os
 import sys
 from tqdm import tqdm
+from learn_bpe import learn_bpe
 
 _TRAIN_DATA_SOURCES = [
     {
@@ -136,17 +137,17 @@ def main():
     test_src, test_trg = compile_files(args.raw_dir, raw_test, args.prefix + '-test')
 
     # Build up the code from training files if not exist
-    # args.codes = os.path.join(args.data_dir, args.codes)
-    # if not os.path.isfile(args.codes):
-    #     sys.stderr.write(f'Collect codes from training data and save to {args.codes}.\n')
-    #     learn_bpe(raw_train['src'], + raw_train['trg'], args.codes, args.symbols, opt.min_frequency, True)
-    # sys.stderr.write(f'BPE codes prepared.\n')
-    #
-    # sys.stderr.write(f'Build up the tokenizer.\n')
-    # with codes.open(args.codes, encoding='utf-8') as codes:
-    #     bpe = BPE(codes, separator=args.separator)
-    # sys.stderr.write(f'Encoding ...\n')
-    #
+    args.codes = os.path.join(args.data_dir, args.codes)
+    if not os.path.isfile(args.codes):
+        sys.stderr.write(f'Collect codes from training data and save to {args.codes}.\n')
+        learn_bpe(raw_train['src'], + raw_train['trg'], args.codes, args.symbols, opt.min_frequency, True)
+    sys.stderr.write(f'BPE codes prepared.\n')
+
+    sys.stderr.write(f'Build up the tokenizer.\n')
+    with codes.open(args.codes, encoding='utf-8') as codes:
+        bpe = BPE(codes, separator=args.separator)
+    sys.stderr.write(f'Encoding ...\n')
+
 
 
 
